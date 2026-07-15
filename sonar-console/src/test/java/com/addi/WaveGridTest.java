@@ -10,100 +10,81 @@ import java.lang.reflect.InvocationTargetException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WaveGridTest {
+    private static final int PANEL_WIDTH = 700;
+    private static final int PANEL_HEIGHT = 350;
+    private static final Color GRID_COLOUR = new Color(0, 100, 0);
 
     @Test
     void shouldHaveExpectedPreferredSize() throws Exception {
         WaveGrid waveGrid = createWaveGridOnEdt();
-
-        assertEquals(
-                new Dimension(500, 500),
-                waveGrid.getPreferredSize()
-        );
+        assertEquals(new Dimension(PANEL_WIDTH, PANEL_HEIGHT), waveGrid.getPreferredSize());
     }
 
     @Test
-    void shouldHaveDarkGrayBackground() throws Exception {
+    void shouldHaveBlackBackground() throws Exception {
         WaveGrid waveGrid = createWaveGridOnEdt();
-
-        assertEquals(
-                Color.DARK_GRAY,
-                waveGrid.getBackground()
-        );
+        assertEquals(Color.BLACK, waveGrid.getBackground());
     }
 
     @Test
     void shouldBeAJPanel() throws Exception {
         WaveGrid waveGrid = createWaveGridOnEdt();
-
         assertInstanceOf(JPanel.class, waveGrid);
     }
 
     @Test
-    void shouldDrawGreenVerticalGridLineAtThirtyPixels() throws Exception {
+    void shouldDrawVerticalGridLineAtTwentyFivePixels() throws Exception {
         BufferedImage image = paintWaveGrid();
-
-        Color pixelColour = new Color(image.getRGB(30, 15));
-
-        assertEquals(Color.GREEN, pixelColour);
+        Color pixelColour = getPixelColour(image, 25, 10);
+        assertEquals(GRID_COLOUR, pixelColour);
     }
 
     @Test
-    void shouldDrawGreenHorizontalGridLineAtThirtyPixels() throws Exception {
+    void shouldDrawHorizontalGridLineAtTwentyFivePixels() throws Exception {
         BufferedImage image = paintWaveGrid();
-
-        Color pixelColour = new Color(image.getRGB(15, 30));
-
-        assertEquals(Color.GREEN, pixelColour);
+        Color pixelColour = getPixelColour(image, 10, 25);
+        assertEquals(GRID_COLOUR, pixelColour);
     }
 
     @Test
-    void shouldPaintDarkGrayBetweenGridLines() throws Exception {
+    void shouldPaintBlackBetweenGridLines() throws Exception {
         BufferedImage image = paintWaveGrid();
-
-        Color pixelColour = new Color(image.getRGB(15, 15));
-
-        assertEquals(Color.DARK_GRAY, pixelColour);
+        Color pixelColour = getPixelColour(image, 10, 10);
+        assertEquals(Color.BLACK, pixelColour);
     }
 
-    private WaveGrid createWaveGridOnEdt()
-            throws InvocationTargetException, InterruptedException {
+    @Test
+    void shouldDrawBrightGreenCentreLine() throws Exception {
+        BufferedImage image = paintWaveGrid();
+        int centreY = PANEL_HEIGHT / 2;
+        Color pixelColour = getPixelColour(image, 10, centreY);
+        assertEquals(Color.GREEN, pixelColour);
+    }
 
+    private Color getPixelColour(BufferedImage image, int x, int y) {
+        return new Color(image.getRGB(x, y));
+    }
+
+    private WaveGrid createWaveGridOnEdt() throws InvocationTargetException, InterruptedException {
         WaveGrid[] result = new WaveGrid[1];
-
-        SwingUtilities.invokeAndWait(() ->
-                result[0] = new WaveGrid()
-        );
-
+        SwingUtilities.invokeAndWait(() -> result[0] = new WaveGrid());
         return result[0];
     }
 
-    private BufferedImage paintWaveGrid()
-            throws InvocationTargetException, InterruptedException {
-
+    private BufferedImage paintWaveGrid() throws InvocationTargetException, InterruptedException {
         BufferedImage[] result = new BufferedImage[1];
-
         SwingUtilities.invokeAndWait(() -> {
             WaveGrid waveGrid = new WaveGrid();
-
-            waveGrid.setSize(500, 500);
-
-            BufferedImage image = new BufferedImage(
-                    500,
-                    500,
-                    BufferedImage.TYPE_INT_RGB
-            );
-
+            waveGrid.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+            BufferedImage image = new BufferedImage(PANEL_WIDTH, PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = image.createGraphics();
-
             try {
                 waveGrid.paint(graphics);
             } finally {
                 graphics.dispose();
             }
-
             result[0] = image;
         });
-
         return result[0];
     }
 }
