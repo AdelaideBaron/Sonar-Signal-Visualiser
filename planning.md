@@ -81,3 +81,10 @@ where `angle = 2π × frequency × time`
 As this is a development project for me, I'll document some resources 
 
 * https://web.mit.edu/6.005/www/sp14/psets/ps4/java-6-tutorial/components.html
+
+### Wave mover
+timer ticks -> increase phase -> store new phase in SineWave -> call repaint() -> Swing calls paintComponent() -> wave is drawn at its new position
+
+To draw, we want to call Wave Grid paintComponent multiple times, perhaps every second? And just update the phase and then re-display?
+
+To start, I'll implement a timer and just display the seconds... 

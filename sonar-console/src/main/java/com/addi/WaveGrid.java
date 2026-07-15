@@ -40,6 +40,9 @@ public class WaveGrid extends JPanel {
         repaint();
     }
 
+    // To draw, we want to call Wave Grid paintComponent multiple times, perhaps every second? And just update the phase and then re-display?
+
+
     public double getPhaseDegrees() {
         return sineWave.getPhaseDegrees();
     }
