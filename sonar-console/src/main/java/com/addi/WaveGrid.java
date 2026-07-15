@@ -1,11 +1,18 @@
 package com.addi;
 
+import com.addi.maths.SineWave;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class WaveGrid extends JPanel {
 
     private static final int GRID_SPACING = 25;
+
+    private static final Color GRID_COLOUR =
+            new Color(0, 100, 0);
+
+    private final SineWave sineWave = new SineWave();
 
     public WaveGrid() {
         setPreferredSize(new Dimension(700, 350));
@@ -16,20 +23,86 @@ public class WaveGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(new Color(0, 100, 0));
+        Graphics2D graphics = (Graphics2D) g.create();
 
-        // vertical grid
+        try {
+            drawGrid(graphics);
+            drawCentreLine(graphics);
+            drawSineWave(graphics);
+        } finally {
+            graphics.dispose();
+        }
+    }
+
+    private void drawGrid(Graphics2D graphics) {
+        graphics.setColor(GRID_COLOUR);
+
         for (int x = 0; x < getWidth(); x += GRID_SPACING) {
-            g.drawLine(x, 0, x, getHeight());
+            graphics.drawLine(
+                    x,
+                    0,
+                    x,
+                    getHeight()
+            );
         }
 
-        // horizontal grid
         for (int y = 0; y < getHeight(); y += GRID_SPACING) {
-            g.drawLine(0, y, getWidth(), y);
+            graphics.drawLine(
+                    0,
+                    y,
+                    getWidth(),
+                    y
+            );
+        }
+    }
+
+    private void drawCentreLine(Graphics2D graphics) {
+        int centreY = getHeight() / 2;
+
+        graphics.setColor(Color.GREEN);
+
+        graphics.drawLine(
+                0,
+                centreY,
+                getWidth(),
+                centreY
+        );
+    }
+
+    private void drawSineWave(Graphics2D graphics) {
+        int width = getWidth();
+        int centreY = getHeight() / 2;
+
+        if (width <= 0) {
+            return;
         }
 
-        // centre line (where the waveform will be drawn)
-        g.setColor(Color.GREEN);
-        g.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
+        graphics.setColor(Color.GREEN);
+        graphics.setStroke(new BasicStroke(2));
+
+        int previousX = 0;
+        int previousY = sineWave.getY(
+                previousX,
+                width,
+                centreY
+        );
+
+        for (int x = 1; x < width; x++) {
+            int y = sineWave.getY(
+                    x,
+                    width,
+                    centreY
+            );
+
+            graphics.drawLine(
+                    previousX,
+                    previousY,
+                    x,
+                    y
+            );
+
+            previousX = x;
+            previousY = y;
+        }
     }
 }
