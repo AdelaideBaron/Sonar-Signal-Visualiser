@@ -5,6 +5,14 @@ import com.addi.maths.SineWave;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * size: 700 × 350
+ * background: black
+ * grid spacing: 25
+ * grid colour: (0, 100, 0)
+ * bright-green centre line
+ * bright-green sine wave
+ * */
 public class WaveGrid extends JPanel {
 
     private static final int GRID_SPACING = 25;
