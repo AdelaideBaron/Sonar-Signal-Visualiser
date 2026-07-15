@@ -29,6 +29,21 @@ public class WaveGrid extends JPanel {
         setBackground(Color.BLACK);
     }
 
+    /**
+     * Updates the phase of the sine wave and redraws the panel.
+     *
+     * A positive phase moves the displayed wave to the right,
+     * assuming SineWave uses sin(angle - phase).
+     */
+    public void setPhaseDegrees(double phaseDegrees) {
+        sineWave.setPhaseDegrees(phaseDegrees);
+        repaint();
+    }
+
+    public double getPhaseDegrees() {
+        return sineWave.getPhaseDegrees();
+    }
+
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
