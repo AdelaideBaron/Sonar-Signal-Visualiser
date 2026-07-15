@@ -1,61 +1,122 @@
 package com.addi.maths;
 
-
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SineWaveTest {
-
-    private final SineWave sineWave = new SineWave();
 
     private static final int WAVE_LENGTH = 700;
     private static final int CENTRE_Y = 175;
     private static final int AMPLITUDE = 80;
 
+    private final SineWave sineWave = new SineWave();
+
     @Test
     void shouldReturnCentreYAtStartOfWave() {
-        int y = sineWave.getY(0, WAVE_LENGTH, CENTRE_Y);
-
-        assertEquals(CENTRE_Y, y);
+        assertEquals(
+                CENTRE_Y,
+                sineWave.getY(0, WAVE_LENGTH, CENTRE_Y)
+        );
     }
 
     @Test
-    void shouldReturnCentreYAfterOneCompleteCycle() {
-        int y = sineWave.getY(WAVE_LENGTH, WAVE_LENGTH, CENTRE_Y);
-
-        assertEquals(CENTRE_Y, y);
+    void shouldReturnCentreYAtEndOfWave() {
+        assertEquals(
+                CENTRE_Y,
+                sineWave.getY(WAVE_LENGTH, WAVE_LENGTH, CENTRE_Y)
+        );
     }
 
     @Test
-    void shouldNeverExceedMaximumAmplitude() {
+    void shouldNeverExceedAmplitude() {
+
         for (int x = 0; x <= WAVE_LENGTH; x++) {
-            int y = sineWave.getY(x, WAVE_LENGTH, CENTRE_Y);
+
+            int y = sineWave.getY(
+                    x,
+                    WAVE_LENGTH,
+                    CENTRE_Y
+            );
 
             assertTrue(
                     y >= CENTRE_Y - AMPLITUDE
                             && y <= CENTRE_Y + AMPLITUDE,
-                    "y was outside the expected range at x=" + x + ": " + y
+                    "Unexpected y value at x=" + x
             );
         }
     }
 
     @Test
-    void shouldReachPeakAmplitudeAtQuarterCycle() {
-        int quarterCycle = WAVE_LENGTH / 4;
+    void shouldReachFirstPeak() {
 
-        int y = sineWave.getY(quarterCycle, WAVE_LENGTH, CENTRE_Y);
+        int firstPeak = 44;
 
-        assertEquals(95, y, 2);
+        int y = sineWave.getY(
+                firstPeak,
+                WAVE_LENGTH,
+                CENTRE_Y
+        );
+
+        assertEquals(96, y, 2);
     }
 
     @Test
-    void shouldReachMinimumAmplitudeAtThreeQuarterCycle() {
-        int threeQuarterCycle = WAVE_LENGTH * 3 / 4;
+    void shouldReachFirstTrough() {
 
-        int y = sineWave.getY(threeQuarterCycle, WAVE_LENGTH, CENTRE_Y);
+        int firstTrough = 131;
 
-        assertEquals(255, y, 2);
+        int y = sineWave.getY(
+                firstTrough,
+                WAVE_LENGTH,
+                CENTRE_Y
+        );
+
+        assertEquals(254, y, 2);
+    }
+
+    @Test
+    void shouldMoveWaveToTheRightWhenPhaseIncreases() {
+
+        int original =
+                sineWave.getY(0, WAVE_LENGTH, CENTRE_Y);
+
+        sineWave.setPhaseDegrees(90);
+
+        int shifted =
+                sineWave.getY(0, WAVE_LENGTH, CENTRE_Y);
+
+        assertNotEquals(original, shifted);
+
+        assertEquals(
+                CENTRE_Y + AMPLITUDE,
+                shifted,
+                2
+        );
+    }
+
+    @Test
+    void shouldReturnToOriginalPositionAfterThreeHundredAndSixtyDegrees() {
+
+        int original =
+                sineWave.getY(0, WAVE_LENGTH, CENTRE_Y);
+
+        sineWave.setPhaseDegrees(360);
+
+        int shifted =
+                sineWave.getY(0, WAVE_LENGTH, CENTRE_Y);
+
+        assertEquals(original, shifted);
+    }
+
+    @Test
+    void shouldAllowPhaseToBeUpdated() {
+
+        sineWave.setPhaseDegrees(135);
+
+        assertEquals(
+                135,
+                sineWave.getPhaseDegrees()
+        );
     }
 }

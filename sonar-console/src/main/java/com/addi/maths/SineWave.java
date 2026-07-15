@@ -1,21 +1,65 @@
 package com.addi.maths;
 
+public class SineWave {
 
-/**
- * signal = amplitude × sin(angle)
- * where angle = 2π × frequency × time
- */
-public class SineWave implements Wave{
+    private final int amplitude;
+    private final double numberOfCycles;
+    private double phaseDegrees;
 
-    private static final int AMPLITUDE = 80;
+    public SineWave() {
+        this(80, 4.0, 0.0);
+    }
+    /**
+     * signal = amplitude × sin(angle)
+     * where angle = 2π × frequency × time
+     */
 
-    public int getY(int x, int waveLength, int centreY) {
-        double angle = 2.0 * Math.PI * x / waveLength;
-
-        return (int) Math.round(
-                centreY - AMPLITUDE * Math.sin(angle)
-        );
+    /**
+     * PHASES
+     *
+     * 0°    normal starting position
+     * 90°   shifted right by one quarter-cycle
+     * 180°  shifted right by half a cycle
+     * 270°  shifted right by three quarters
+     * 360°  visually identical to 0°
+     */
+    public SineWave(
+            int amplitude,
+            double numberOfCycles,
+            double phaseDegrees
+    ) {
+        this.amplitude = amplitude;
+        this.numberOfCycles = numberOfCycles;
+        this.phaseDegrees = phaseDegrees;
     }
 
+    public int getY(int x, int width, int centreY) {
+        if (width <= 0) {
+            return centreY;
+        }
 
+        double progress = (double) x / width;
+
+        double phaseRadians =
+                Math.toRadians(phaseDegrees);
+
+        double angle =
+                progress
+                        * numberOfCycles
+                        * 2
+                        * Math.PI;
+
+        double value =
+                Math.sin(angle - phaseRadians);
+
+        return centreY - (int) (value * amplitude);
+    }
+
+    public void setPhaseDegrees(double phaseDegrees) {
+        this.phaseDegrees = phaseDegrees;
+    }
+
+    public double getPhaseDegrees() {
+        return phaseDegrees;
+    }
 }
