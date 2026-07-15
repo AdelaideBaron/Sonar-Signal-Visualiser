@@ -6,13 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * size: 700 × 350
- * background: black
- * grid spacing: 25
- * grid colour: (0, 100, 0)
- * bright-green centre line
- * bright-green sine wave
- * */
+ * Displays a sonar-style grid and sine waveform.
+ *
+ * Size: 700 × 350
+ * Background: black
+ * Grid spacing: 25
+ * Grid colour: RGB(0, 100, 0)
+ * Centre line: bright green
+ * Wave: bright green
+ */
 public class WaveGrid extends JPanel {
 
     private static final int GRID_SPACING = 25;
@@ -28,17 +30,24 @@ public class WaveGrid extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
-        Graphics2D graphics = (Graphics2D) g.create();
+        Graphics2D graphics2D =
+                (Graphics2D) graphics.create();
 
         try {
-            drawGrid(graphics);
-            drawCentreLine(graphics);
-            drawSineWave(graphics);
+            drawGrid(graphics2D);
+            drawCentreLine(graphics2D);
+
+            SineWaveDrawer.draw(
+                    graphics2D,
+                    sineWave,
+                    getWidth(),
+                    getHeight()
+            );
         } finally {
-            graphics.dispose();
+            graphics2D.dispose();
         }
     }
 
@@ -75,42 +84,5 @@ public class WaveGrid extends JPanel {
                 getWidth(),
                 centreY
         );
-    }
-
-    private void drawSineWave(Graphics2D graphics) {
-        int width = getWidth();
-        int centreY = getHeight() / 2;
-
-        if (width <= 0) {
-            return;
-        }
-
-        graphics.setColor(Color.GREEN);
-        graphics.setStroke(new BasicStroke(2));
-
-        int previousX = 0;
-        int previousY = sineWave.getY(
-                previousX,
-                width,
-                centreY
-        );
-
-        for (int x = 1; x < width; x++) {
-            int y = sineWave.getY(
-                    x,
-                    width,
-                    centreY
-            );
-
-            graphics.drawLine(
-                    previousX,
-                    previousY,
-                    x,
-                    y
-            );
-
-            previousX = x;
-            previousY = y;
-        }
     }
 }

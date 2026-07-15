@@ -1,6 +1,10 @@
 package com.addi.maths;
 
 
+/**
+ * signal = amplitude × sin(angle)
+ * where angle = 2π × frequency × time
+ */
 public class SineWave implements Wave{
 
     private static final int AMPLITUDE = 80;
@@ -12,4 +16,6 @@ public class SineWave implements Wave{
                 centreY - AMPLITUDE * Math.sin(angle)
         );
     }
+
+
 }
