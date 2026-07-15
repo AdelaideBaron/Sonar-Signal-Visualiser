@@ -1,7 +1,7 @@
 package com.addi.maths;
 
 
-public class SineWave {
+public class SineWave implements Wave{
 
     private static final int AMPLITUDE = 80;
 
