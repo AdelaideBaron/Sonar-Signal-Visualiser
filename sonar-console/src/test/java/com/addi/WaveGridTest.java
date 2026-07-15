@@ -158,11 +158,6 @@ class WaveGridTest {
         SwingUtilities.invokeAndWait(() -> {
             WaveGrid waveGrid = new WaveGrid();
 
-            /*
-             * Preferred size is only a request to a layout manager.
-             * Since there is no JFrame or layout manager in this test,
-             * the component must be given an actual size before painting.
-             */
             waveGrid.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 
             BufferedImage image = new BufferedImage(
