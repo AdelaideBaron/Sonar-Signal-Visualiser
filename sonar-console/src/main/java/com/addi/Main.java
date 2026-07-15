@@ -11,6 +11,9 @@ public class Main {
         HomePanel homePanel = new HomePanel();
         frame.setContentPane(homePanel);
 
+//        WaveGrid waveGrid = new WaveGrid();
+//        homePanel.add(waveGrid, BorderLayout.CENTER);
+
         frame.pack();
         frame.setVisible(true);
     }
