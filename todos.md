@@ -1,2 +1,2 @@
 - github actions to build and run tests 
-- 
+- formatter plugin, e.g. spotifygit
