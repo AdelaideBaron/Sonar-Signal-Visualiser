@@ -15,12 +15,8 @@ public class HomePanel {
         JLabel title = new JLabel("SONAR CONSOLE");
         title.setForeground(Color.GREEN);
 
-        JTextField field = new JTextField(20);
 
-        JButton button = new JButton("Submit");
 
         panel.add(title);
-        panel.add(field);
-        panel.add(button);
     }
 }
