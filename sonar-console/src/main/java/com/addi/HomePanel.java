@@ -18,9 +18,10 @@ public class HomePanel extends JPanel {
 
         WaveGrid waveGrid = new WaveGrid();
 
-
         add(title, BorderLayout.NORTH);
         add(waveGrid, BorderLayout.CENTER);
+        add(new DigitalClockPanel(), BorderLayout.SOUTH);
+
 
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
