@@ -24,25 +24,15 @@ public class HomePanel extends JPanel {
         );
 
         JLabel title = createTitle();
-        JLabel frequencyText = createFrequencyDisplay(INITIAL_FREQUENCY_HZ);
 
         waveGrid = new WaveGrid(INITIAL_FREQUENCY_HZ);
 
         add(title, BorderLayout.NORTH);
         add(waveGrid, BorderLayout.CENTER);
 
-        // todo move this into a new class, should be 'infotable' or something
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(Color.BLACK);
 
-        bottomPanel.add(new DigitalClockPanel());
-        bottomPanel.add(frequencyText);
+        add(new InfoTablePanel(INITIAL_FREQUENCY_HZ), BorderLayout.SOUTH);
 
-        add(bottomPanel, BorderLayout.SOUTH);
-
-
-//        add(new DigitalClockPanel(), BorderLayout.SOUTH);
-//        add(frequencyText, BorderLayout.SOUTH);
 
         waveGrid.startAnimation();
     }
@@ -61,17 +51,6 @@ public class HomePanel extends JPanel {
         return title;
     }
 
-    private JLabel createFrequencyDisplay(double frequency){
-        JLabel frequencyDisplay = new JLabel("frequency: {}".formatted(frequency));
-
-        frequencyDisplay.setForeground(Color.GREEN);
-        frequencyDisplay.setFont(
-                new Font("Monospaced", Font.BOLD, 12)
-        );
-
-        return frequencyDisplay;
-
-    }
 
     public WaveGrid getWaveGrid() {
         return waveGrid;
