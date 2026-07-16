@@ -24,19 +24,19 @@ public class WaveGrid extends JPanel {
 
     private static final int TIMER_DELAY_MILLISECONDS = 250;
 
-    /*
-     * The phase advances by this amount every timer tick.
-     *
-     * Increase this value to make the wave move faster.
-     * Decrease it to make the wave move more slowly.
-     */
-    private static final double PHASE_CHANGE_PER_TICK = 45.0;
-
     private final SineWave sineWave = new SineWave();
-
     private final Timer animationTimer;
 
-    public WaveGrid() {
+    /**
+     * Frequency in Hertz: cycles per second.
+     */
+    private double frequency;
+
+    public WaveGrid(double frequency) {
+        validateFrequency(frequency);
+
+        this.frequency = frequency;
+
         setPreferredSize(new Dimension(700, 350));
         setBackground(Color.BLACK);
 
@@ -46,53 +46,45 @@ public class WaveGrid extends JPanel {
         );
     }
 
-    /**
-     * Advances the wave's phase and asks Swing to redraw
-     * the component.
-     */
     private void advancePhase() {
+        double secondsPerTick =
+                TIMER_DELAY_MILLISECONDS / 1000.0;
+
+        double phaseChange =
+                360.0 * frequency * secondsPerTick;
+
         double nextPhase =
-                getPhaseDegrees() + PHASE_CHANGE_PER_TICK;
+                getPhaseDegrees() + phaseChange;
 
         setPhaseDegrees(nextPhase % 360.0);
     }
 
-    /**
-     * Starts the wave animation.
-     */
     public void startAnimation() {
         animationTimer.start();
     }
 
-    /**
-     * Stops the wave animation.
-     */
     public void stopAnimation() {
         animationTimer.stop();
     }
 
-    /**
-     * Returns whether the timer is currently running.
-     */
     public boolean isAnimationRunning() {
         return animationTimer.isRunning();
     }
 
-    /**
-     * Resets the wave to its starting phase.
-     */
     public void resetAnimation() {
         stopAnimation();
         setPhaseDegrees(0.0);
     }
 
-    /**
-     * Updates the phase of the sine wave and schedules
-     * the panel to be repainted.
-     *
-     * A positive phase moves the displayed wave to the right
-     * when SineWave uses sin(angle - phase).
-     */
+    public void setFrequency(double frequency) {
+        validateFrequency(frequency);
+        this.frequency = frequency;
+    }
+
+    public double getFrequency() {
+        return frequency;
+    }
+
     public void setPhaseDegrees(double phaseDegrees) {
         sineWave.setPhaseDegrees(phaseDegrees);
         repaint();
@@ -100,6 +92,14 @@ public class WaveGrid extends JPanel {
 
     public double getPhaseDegrees() {
         return sineWave.getPhaseDegrees();
+    }
+
+    private void validateFrequency(double frequency) {
+        if (!Double.isFinite(frequency) || frequency <= 0.0) {
+            throw new IllegalArgumentException(
+                    "Frequency must be a positive, finite number."
+            );
+        }
     }
 
     @Override
