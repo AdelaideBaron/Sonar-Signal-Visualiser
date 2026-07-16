@@ -1,4 +1,4 @@
-package com.addi;
+        package com.addi;
 
 import com.addi.maths.SineWave;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Displays a sonar-style grid and sine waveform.
+ * Displays an animated sonar-style grid and sine waveform.
  *
  * Size: 700 × 350
  * Background: black
@@ -22,26 +22,81 @@ public class WaveGrid extends JPanel {
     private static final Color GRID_COLOUR =
             new Color(0, 100, 0);
 
+    private static final int TIMER_DELAY_MILLISECONDS = 250;
+
+    /*
+     * The phase advances by this amount every timer tick.
+     *
+     * Increase this value to make the wave move faster.
+     * Decrease it to make the wave move more slowly.
+     */
+    private static final double PHASE_CHANGE_PER_TICK = 45.0;
+
     private final SineWave sineWave = new SineWave();
+
+    private final Timer animationTimer;
 
     public WaveGrid() {
         setPreferredSize(new Dimension(700, 350));
         setBackground(Color.BLACK);
+
+        animationTimer = new Timer(
+                TIMER_DELAY_MILLISECONDS,
+                event -> advancePhase()
+        );
     }
 
     /**
-     * Updates the phase of the sine wave and redraws the panel.
+     * Advances the wave's phase and asks Swing to redraw
+     * the component.
+     */
+    private void advancePhase() {
+        double nextPhase =
+                getPhaseDegrees() + PHASE_CHANGE_PER_TICK;
+
+        setPhaseDegrees(nextPhase % 360.0);
+    }
+
+    /**
+     * Starts the wave animation.
+     */
+    public void startAnimation() {
+        animationTimer.start();
+    }
+
+    /**
+     * Stops the wave animation.
+     */
+    public void stopAnimation() {
+        animationTimer.stop();
+    }
+
+    /**
+     * Returns whether the timer is currently running.
+     */
+    public boolean isAnimationRunning() {
+        return animationTimer.isRunning();
+    }
+
+    /**
+     * Resets the wave to its starting phase.
+     */
+    public void resetAnimation() {
+        stopAnimation();
+        setPhaseDegrees(0.0);
+    }
+
+    /**
+     * Updates the phase of the sine wave and schedules
+     * the panel to be repainted.
      *
-     * A positive phase moves the displayed wave to the right,
-     * assuming SineWave uses sin(angle - phase).
+     * A positive phase moves the displayed wave to the right
+     * when SineWave uses sin(angle - phase).
      */
     public void setPhaseDegrees(double phaseDegrees) {
         sineWave.setPhaseDegrees(phaseDegrees);
         repaint();
     }
-
-    // To draw, we want to call Wave Grid paintComponent multiple times, perhaps every second? And just update the phase and then re-display?
-
 
     public double getPhaseDegrees() {
         return sineWave.getPhaseDegrees();

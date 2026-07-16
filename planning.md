@@ -88,3 +88,27 @@ timer ticks -> increase phase -> store new phase in SineWave -> call repaint() -
 To draw, we want to call Wave Grid paintComponent multiple times, perhaps every second? And just update the phase and then re-display?
 
 To start, I'll implement a timer and just display the seconds... 
+
+So now, I'll need the frequency? This is in Hz -> /s 
+- so repaint every 1/4 second? 
+- I'll want to move the wave phase pi / 2?
+
+Logic: 
+- get the frequency 
+- Every 1/4 second, repaint 
+- want to figure out where it'll be at 0.25 seconds later 
+- so it'll have moved 1/4 * the frequency * 360° 
+- phase for the sine wave: 
+```java
+    /**
+     * PHASES
+     *
+     * 0°    normal starting position
+     * 90°   shifted right by one quarter-cycle
+     * 180°  shifted right by half a cycle
+     * 270°  shifted right by three quarters
+     * 360°  visually identical to 0°
+     */
+```
+
+So if the frequency is 2Hz - after 0.25 seconds it'll have moved 2 * 0.25 * 360° -> 180°
