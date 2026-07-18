@@ -16,7 +16,7 @@ public class DigitalClockPanel extends JPanel {
 
     public DigitalClockPanel() {
         setBackground(Color.BLACK);
-
+        timeLabel.setName("timeLabel");
         timeLabel.setForeground(Color.GREEN);
         timeLabel.setFont(
                 new Font("Monospaced", Font.BOLD, 22)

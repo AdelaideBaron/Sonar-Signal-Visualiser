@@ -43,6 +43,8 @@ public class HomePanel extends JPanel {
                 SwingConstants.CENTER
         );
 
+        title.setName("sonarConsoleLabel");
+
         title.setForeground(Color.GREEN);
         title.setFont(
                 new Font("Monospaced", Font.BOLD, 24)

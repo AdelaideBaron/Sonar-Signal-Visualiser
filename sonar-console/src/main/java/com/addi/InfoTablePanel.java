@@ -18,6 +18,7 @@ public class InfoTablePanel extends JPanel {
     private JLabel createFrequencyDisplay(double frequency){
         JLabel frequencyDisplay = new JLabel(String.format("frequency: %g Hz",frequency));
 
+        frequencyDisplay.setName("frequencyLabel");
         frequencyDisplay.setForeground(Color.GREEN);
         frequencyDisplay.setFont(
                 new Font("Monospaced", Font.BOLD, 12)
