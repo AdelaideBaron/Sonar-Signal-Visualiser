@@ -14,8 +14,11 @@ permissions:
 
 jobs:
   build:
-    name: Format and test
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: sonar-console
 
     steps:
       - name: Check out repository
@@ -27,6 +30,7 @@ jobs:
           distribution: temurin
           java-version: "25"
           cache: maven
+          cache-dependency-path: sonar-console/pom.xml
 
       - name: Check formatting
         run: >
