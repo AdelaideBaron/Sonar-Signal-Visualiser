@@ -63,12 +63,6 @@ class HomePanelUITest extends UITest {
         assertTrue(panel.getWaveGrid() instanceof WaveGrid);
     }
 
-    private HomePanel createPanel() throws Exception {
-        HomePanel[] result = new HomePanel[1];
 
-        SwingUtilities.invokeAndWait(() -> result[0] = new HomePanel());
-
-        return result[0];
-    }
 
 }

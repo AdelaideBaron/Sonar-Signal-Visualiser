@@ -1,5 +1,7 @@
 package com.addi.UITesting;
 
+import com.addi.HomePanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,5 +24,13 @@ public class UITest {
         }
 
         return null;
+    }
+
+    protected HomePanel createPanel() throws Exception {
+        HomePanel[] result = new HomePanel[1];
+
+        SwingUtilities.invokeAndWait(() -> result[0] = new HomePanel());
+
+        return result[0];
     }
 }
