@@ -1,5 +1,6 @@
-package com.addi;
+package com.addi.unitTesting;
 
+import com.addi.DigitalClockPanel;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
