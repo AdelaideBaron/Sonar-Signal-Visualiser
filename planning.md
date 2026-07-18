@@ -112,3 +112,9 @@ Logic:
 ```
 
 So if the frequency is 2Hz - after 0.25 seconds it'll have moved 2 * 0.25 * 360° -> 180°
+
+
+# Testing 
+
+## Frontend 
+At the moment, this will just be manual - but views to use Swing UI automation in the future 

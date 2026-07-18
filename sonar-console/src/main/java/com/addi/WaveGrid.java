@@ -1,6 +1,6 @@
         package com.addi;
 
-import com.addi.maths.SineWave;
+import com.addi.unitTesting.maths.SineWave;
 
 import javax.swing.*;
 import java.awt.*;
