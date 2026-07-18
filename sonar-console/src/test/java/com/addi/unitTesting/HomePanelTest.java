@@ -30,8 +30,6 @@ class HomePanelTest {
         HomePanel panel = createPanelOnEdt();
 //         todo update tests to use a beforeeach
 
-//        assertEquals(1, panel.getComponentCount());
-
         JLabel title = (JLabel) panel.getComponent(0);
 
         assertEquals("SONAR CONSOLE", title.getText());    }

@@ -166,10 +166,6 @@ class WaveGridUITest extends UITest {
 
         BufferedImage image = paintPanel(waveGrid);
 
-        /*
-         * Avoid grid lines, the centre line and the sine wave by choosing
-         * a pixel away from obvious painted locations.
-         */
         Color pixel = new Color(image.getRGB(13, 13));
 
         assertEquals(Color.BLACK, pixel);

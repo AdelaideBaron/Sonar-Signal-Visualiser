@@ -5,9 +5,6 @@ import java.awt.*;
 
 public class InfoTablePanel extends JPanel {
 
-    //   JPanel bottomPanel = new JPanel();
-    //        bottomPanel.setBackground(Color.BLACK);
-
     public InfoTablePanel(double frequency){
         setBackground(Color.BLACK);
 
