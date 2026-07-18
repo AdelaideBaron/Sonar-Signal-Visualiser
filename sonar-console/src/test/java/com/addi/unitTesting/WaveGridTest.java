@@ -1,6 +1,7 @@
-        package com.addi;
+        package com.addi.unitTesting;
 
-import com.addi.maths.SineWave;
+import com.addi.WaveGrid;
+import com.addi.unitTesting.maths.SineWave;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -144,7 +145,7 @@ class WaveGridTest {
         WaveGrid[] result = new WaveGrid[1];
 
         SwingUtilities.invokeAndWait(() ->
-                result[0] = new WaveGrid()
+                result[0] = new WaveGrid(10)
         );
 
         return result[0];
@@ -156,7 +157,7 @@ class WaveGridTest {
         BufferedImage[] result = new BufferedImage[1];
 
         SwingUtilities.invokeAndWait(() -> {
-            WaveGrid waveGrid = new WaveGrid();
+            WaveGrid waveGrid = new WaveGrid(10);
 
             waveGrid.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 

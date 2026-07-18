@@ -1,12 +1,12 @@
-package com.addi;
+        package com.addi;
 
-import com.addi.maths.SineWave;
+import com.addi.unitTesting.maths.SineWave;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Displays a sonar-style grid and sine waveform.
+ * Displays an animated sonar-style grid and sine waveform.
  *
  * Size: 700 × 350
  * Background: black
@@ -22,19 +22,69 @@ public class WaveGrid extends JPanel {
     private static final Color GRID_COLOUR =
             new Color(0, 100, 0);
 
-    private final SineWave sineWave = new SineWave();
+    private static final int TIMER_DELAY_MILLISECONDS = 250;
 
-    public WaveGrid() {
-        setPreferredSize(new Dimension(700, 350));
-        setBackground(Color.BLACK);
-    }
+    private final SineWave sineWave = new SineWave();
+    private final Timer animationTimer;
 
     /**
-     * Updates the phase of the sine wave and redraws the panel.
-     *
-     * A positive phase moves the displayed wave to the right,
-     * assuming SineWave uses sin(angle - phase).
+     * Frequency in Hertz: cycles per second.
      */
+    private double frequency;
+
+    public WaveGrid(double frequency) {
+        validateFrequency(frequency);
+
+        this.frequency = frequency;
+
+        setPreferredSize(new Dimension(700, 350));
+        setBackground(Color.BLACK);
+
+        animationTimer = new Timer(
+                TIMER_DELAY_MILLISECONDS,
+                event -> advancePhase()
+        );
+    }
+
+    private void advancePhase() {
+        double secondsPerTick =
+                TIMER_DELAY_MILLISECONDS / 1000.0;
+
+        double phaseChange =
+                360.0 * frequency * secondsPerTick;
+
+        double nextPhase =
+                getPhaseDegrees() + phaseChange;
+
+        setPhaseDegrees(nextPhase % 360.0);
+    }
+
+    public void startAnimation() {
+        animationTimer.start();
+    }
+
+    public void stopAnimation() {
+        animationTimer.stop();
+    }
+
+    public boolean isAnimationRunning() {
+        return animationTimer.isRunning();
+    }
+
+    public void resetAnimation() {
+        stopAnimation();
+        setPhaseDegrees(0.0);
+    }
+
+    public void setFrequency(double frequency) {
+        validateFrequency(frequency);
+        this.frequency = frequency;
+    }
+
+    public double getFrequency() {
+        return frequency;
+    }
+
     public void setPhaseDegrees(double phaseDegrees) {
         sineWave.setPhaseDegrees(phaseDegrees);
         repaint();
@@ -42,6 +92,14 @@ public class WaveGrid extends JPanel {
 
     public double getPhaseDegrees() {
         return sineWave.getPhaseDegrees();
+    }
+
+    private void validateFrequency(double frequency) {
+        if (!Double.isFinite(frequency) || frequency <= 0.0) {
+            throw new IllegalArgumentException(
+                    "Frequency must be a positive, finite number."
+            );
+        }
     }
 
     @Override

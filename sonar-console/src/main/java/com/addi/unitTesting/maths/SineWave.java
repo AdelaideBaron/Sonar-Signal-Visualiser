@@ -1,4 +1,4 @@
-package com.addi.maths;
+package com.addi.unitTesting.maths;
 
 public class SineWave {
 
