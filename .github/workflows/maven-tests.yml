@@ -35,7 +35,7 @@ jobs:
       - name: Check formatting
         run: >
           mvn --batch-mode --no-transfer-progress
-          com.spotify.fmt:fmt-maven-plugin:2.27:check
+          com.spotify.fmt:fmt-maven-plugin:2.29:check
 
       - name: Run tests
         run: mvn --batch-mode --no-transfer-progress clean test
