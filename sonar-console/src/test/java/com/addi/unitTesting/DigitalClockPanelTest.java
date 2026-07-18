@@ -1,124 +1,108 @@
 package com.addi.unitTesting;
 
-import com.addi.DigitalClockPanel;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import javax.swing.*;
+import com.addi.DigitalClockPanel;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Pattern;
-
-import static org.junit.jupiter.api.Assertions.*;
+import javax.swing.*;
+import org.junit.jupiter.api.Test;
 
 class DigitalClockPanelTest {
 
-    private static final Pattern TIME_PATTERN =
-            Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
+  private static final Pattern TIME_PATTERN = Pattern.compile("\\d{2}:\\d{2}:\\d{2}");
 
-    @Test
-    void shouldBeAJPanel() throws Exception {
-        DigitalClockPanel panel = createPanelOnEdt();
+  @Test
+  void shouldBeAJPanel() throws Exception {
+    DigitalClockPanel panel = createPanelOnEdt();
 
-        assertInstanceOf(JPanel.class, panel);
-    }
+    assertInstanceOf(JPanel.class, panel);
+  }
 
-    @Test
-    void shouldHaveBlackBackground() throws Exception {
-        DigitalClockPanel panel = createPanelOnEdt();
+  @Test
+  void shouldHaveBlackBackground() throws Exception {
+    DigitalClockPanel panel = createPanelOnEdt();
 
-        assertEquals(Color.BLACK, panel.getBackground());
-    }
+    assertEquals(Color.BLACK, panel.getBackground());
+  }
 
-    @Test
-    void shouldContainOneLabel() throws Exception {
-        DigitalClockPanel panel = createPanelOnEdt();
+  @Test
+  void shouldContainOneLabel() throws Exception {
+    DigitalClockPanel panel = createPanelOnEdt();
 
-        assertEquals(1, panel.getComponentCount());
-        assertInstanceOf(JLabel.class, panel.getComponent(0));
-    }
+    assertEquals(1, panel.getComponentCount());
+    assertInstanceOf(JLabel.class, panel.getComponent(0));
+  }
 
-    @Test
-    void shouldDisplayTimeInHoursMinutesAndSecondsFormat()
-            throws Exception {
+  @Test
+  void shouldDisplayTimeInHoursMinutesAndSecondsFormat() throws Exception {
 
-        DigitalClockPanel panel = createPanelOnEdt();
-        JLabel timeLabel = getTimeLabel(panel);
+    DigitalClockPanel panel = createPanelOnEdt();
+    JLabel timeLabel = getTimeLabel(panel);
 
-        assertTrue(
-                TIME_PATTERN.matcher(timeLabel.getText()).matches(),
-                "Expected time in HH:mm:ss format but was: "
-                        + timeLabel.getText()
-        );
-    }
+    assertTrue(
+        TIME_PATTERN.matcher(timeLabel.getText()).matches(),
+        "Expected time in HH:mm:ss format but was: " + timeLabel.getText());
+  }
 
-    @Test
-    void shouldDisplayGreenText() throws Exception {
-        DigitalClockPanel panel = createPanelOnEdt();
-        JLabel timeLabel = getTimeLabel(panel);
+  @Test
+  void shouldDisplayGreenText() throws Exception {
+    DigitalClockPanel panel = createPanelOnEdt();
+    JLabel timeLabel = getTimeLabel(panel);
 
-        assertEquals(Color.GREEN, timeLabel.getForeground());
-    }
+    assertEquals(Color.GREEN, timeLabel.getForeground());
+  }
 
-    @Test
-    void shouldUseBoldMonospacedFontAtTwentyTwoPoints()
-            throws Exception {
+  @Test
+  void shouldUseBoldMonospacedFontAtTwentyTwoPoints() throws Exception {
 
-        DigitalClockPanel panel = createPanelOnEdt();
-        JLabel timeLabel = getTimeLabel(panel);
+    DigitalClockPanel panel = createPanelOnEdt();
+    JLabel timeLabel = getTimeLabel(panel);
 
-        Font font = timeLabel.getFont();
+    Font font = timeLabel.getFont();
 
-        assertEquals(Font.MONOSPACED, font.getFamily());
-        assertTrue(font.isBold());
-        assertEquals(22, font.getSize());
-    }
+    assertEquals(Font.MONOSPACED, font.getFamily());
+    assertTrue(font.isBold());
+    assertEquals(22, font.getSize());
+  }
 
-    @Test
-    void shouldUpdateDisplayedTimeAfterTimerTick()
-            throws Exception {
+  @Test
+  void shouldUpdateDisplayedTimeAfterTimerTick() throws Exception {
 
-        DigitalClockPanel panel = createPanelOnEdt();
-        JLabel timeLabel = getTimeLabel(panel);
+    DigitalClockPanel panel = createPanelOnEdt();
+    JLabel timeLabel = getTimeLabel(panel);
 
-        String originalTime = timeLabel.getText();
+    String originalTime = timeLabel.getText();
 
-        Thread.sleep(1_100);
+    Thread.sleep(1_100);
 
-        String updatedTime = getLabelTextOnEdt(timeLabel);
+    String updatedTime = getLabelTextOnEdt(timeLabel);
 
-        assertNotEquals(
-                originalTime,
-                updatedTime,
-                "Expected the clock to update after one second"
-        );
-    }
+    assertNotEquals(originalTime, updatedTime, "Expected the clock to update after one second");
+  }
 
-    private DigitalClockPanel createPanelOnEdt()
-            throws InvocationTargetException, InterruptedException {
+  private DigitalClockPanel createPanelOnEdt()
+      throws InvocationTargetException, InterruptedException {
 
-        DigitalClockPanel[] result = new DigitalClockPanel[1];
+    DigitalClockPanel[] result = new DigitalClockPanel[1];
 
-        SwingUtilities.invokeAndWait(() ->
-                result[0] = new DigitalClockPanel()
-        );
+    SwingUtilities.invokeAndWait(() -> result[0] = new DigitalClockPanel());
 
-        return result[0];
-    }
+    return result[0];
+  }
 
-    private JLabel getTimeLabel(DigitalClockPanel panel) {
-        return (JLabel) panel.getComponent(0);
-    }
+  private JLabel getTimeLabel(DigitalClockPanel panel) {
+    return (JLabel) panel.getComponent(0);
+  }
 
-    private String getLabelTextOnEdt(JLabel label)
-            throws InvocationTargetException, InterruptedException {
+  private String getLabelTextOnEdt(JLabel label)
+      throws InvocationTargetException, InterruptedException {
 
-        String[] result = new String[1];
+    String[] result = new String[1];
 
-        SwingUtilities.invokeAndWait(() ->
-                result[0] = label.getText()
-        );
+    SwingUtilities.invokeAndWait(() -> result[0] = label.getText());
 
-        return result[0];
-    }
+    return result[0];
+  }
 }
-
